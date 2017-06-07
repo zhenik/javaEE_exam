@@ -13,6 +13,16 @@ import util.DeleterEJB;
 
 import javax.ejb.EJB;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 public abstract class EjbTestBase {
 
     @Deployment
@@ -49,4 +59,19 @@ public abstract class EjbTestBase {
         return userEJB.createUser(user,password,"a","b","c", true);
     }
 
+    protected Dish createDish(){
+        String dishName="dish";
+        boolean b1 = restaurantEJB.createDish(dishName, "description");
+        Dish dish = restaurantEJB.getDish(dishName);
+
+        assertTrue(b1);
+        assertNotNull(dish);
+        assertEquals(dishName, dish.getName());
+
+        return dish;
+    }
+
+    protected Date getToday(){
+        return Date.from(Instant.now());
+    }
 }
