@@ -19,7 +19,7 @@ import java.util.*;
 
 @Named
 @SessionScoped
-public class MenuController implements Serializable {
+public class MenuCreateController implements Serializable {
 
     @EJB
     private RestaurantEJB restaurantEJB;
@@ -33,7 +33,7 @@ public class MenuController implements Serializable {
     @PostConstruct
     public void init(){menuDishes=new HashMap<>();}
 
-    public MenuController() {}
+    public MenuCreateController() {}
 
     public String getDate() {return null;}
     public void setDate(String date) {this.date = date;}

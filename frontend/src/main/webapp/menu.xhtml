@@ -36,14 +36,14 @@
                         <h:form>
                             <h:panelGrid columns="3">
                                 Menu Date :
-                                <h:inputText id="date" value="#{menuController.date}"
+                                <h:inputText id="date" value="#{menuCreateController.date}"
                                              size="20" required="true"
                                              label="Date format error dd-MM-yyyy">
                                     <f:convertDateTime pattern="dd-MM-yyyy"/>
                                 </h:inputText>
                                 <h:message for="date" style="color:red"/>
                             </h:panelGrid>
-                            <h:commandButton value="Create" action="#{menuController.save()}"/>
+                            <h:commandButton value="Create" action="#{menuCreateController.save()}"/>
                         <!--DATE END-->
                             <br/>
 
@@ -53,7 +53,7 @@
 
 
                             <!--DISH LIST START-->
-                            <c:set var="dishMap" value="#{menuController.menuDishes}"/>
+                            <c:set var="dishMap" value="#{menuCreateController.menuDishes}"/>
                             <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
                                 <h:column>
                                     <h:outputText value="#{dish.name}"/>
@@ -61,7 +61,7 @@
                                 <h:column>
                                     <h:selectBooleanCheckbox
                                             value="#{dishMap[dish.name]}"
-                                            valueChangeListener="#{menuController.updateMap}">
+                                            valueChangeListener="#{menuCreateController.updateMap}">
                                         <f:attribute name="dishName" value="#{dish.name}"/>
                                     </h:selectBooleanCheckbox>
                                 </h:column>
