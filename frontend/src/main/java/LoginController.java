@@ -25,6 +25,7 @@ public class LoginController implements Serializable {
      * The current user registered in this session
      */
     private String registeredUser;
+    private Boolean chef=false;
 
 
     public LoginController() {}
@@ -42,7 +43,9 @@ public class LoginController implements Serializable {
     }
 
     public String logOut(){
-        registeredUser = null;
+        registeredUser=null;
+        formChef=false;
+        chef=false;
         return "home.jsf";
     }
 
@@ -51,6 +54,7 @@ public class LoginController implements Serializable {
         boolean valid = userEJB.login(formUserName, formPassword);
         if(valid){
             registeredUser = formUserName;
+            chef= userEJB.getUser(registeredUser).getChef();
             return "home.jsf";
         } else {
             return "login.jsf";
@@ -72,6 +76,7 @@ public class LoginController implements Serializable {
 
         if(registered){
             registeredUser = formUserName;
+            chef=formChef;
             return "home.jsf";
         } else {
             return "newUser.jsf";
@@ -126,4 +131,9 @@ public class LoginController implements Serializable {
         this.formLastName = formLastName;
     }
 
+    public Boolean getFormChef() {return formChef;}
+
+    public void setFormChef(Boolean formChef) {this.formChef = formChef;}
+
+    public Boolean getChef() {return chef;}
 }
