@@ -11,13 +11,8 @@ import java.util.Set;
 public class Menu {
 
     @Id
-    @GeneratedValue
-    private Long id;
-
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(unique = true)
-    private Date date;
+    private Date dateId;
 
     @Size(min = 1)
     @ManyToMany(fetch = FetchType.EAGER)
@@ -25,18 +20,13 @@ public class Menu {
 
     public Menu() {}
 
-    public Long getId() {return id;}
-
-    public void setId(Long id) {this.id = id;}
-
-    public Date getDate() {return date;}
-
-    public void setDate(Date date) {this.date = date;}
+    public Date getDateId() {return dateId;}
+    public void setDateId(Date dateId) {this.dateId = dateId;}
 
     public Set<Dish> getDishes() {
-        if (dishes==null){
-            return new HashSet<>();
-        }
+//        if (dishes==null){
+//            return new HashSet<>();
+//        }
         return dishes;
     }
 
