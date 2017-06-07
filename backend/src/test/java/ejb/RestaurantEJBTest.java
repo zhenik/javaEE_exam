@@ -7,10 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJBException;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -22,7 +19,7 @@ public class RestaurantEJBTest extends EjbTestBase  {
     /**
 
       +------------------------------------------------------------+
-      |DISH                                                        |
+      |MARKED by task                                              |
       +------------------------------------------------------------+
 
     */
@@ -39,6 +36,178 @@ public class RestaurantEJBTest extends EjbTestBase  {
         assertTrue(created);
     }
 
+    @Test
+    public void testCreateTwoDishes(){
+        //Arrange
+        String dishName1 = "foo";
+        String dishName2 = "bar";
+        String dishDescription = "dishDescription";
+
+        //Act
+        boolean created1 = restaurantEJB.createDish(dishName1,dishDescription);
+        boolean created2 = restaurantEJB.createDish(dishName2,dishDescription);
+
+        //Assert
+        assertTrue(created1);
+        assertTrue(created2);
+    }
+
+    @Test
+    public void testCreateMenuWithNoDish(){
+        //Arrange
+        Date today1 = getToday();
+
+        //Act
+        boolean menuCreated =  restaurantEJB.createMenu(today1);
+
+        //Assert
+        assertFalse(menuCreated);
+        assertEquals(0, restaurantEJB.getDishes().size());
+    }
+
+
+    @Test
+    public void testGetCurrentMenu(){
+        //Arrange
+        Dish dish = createDish("foo");
+        Date today1 = getToday();
+        boolean menuCreated =  restaurantEJB.createMenu(today1, dish);
+
+        //Act
+        Date today_severalMillsLater = getToday();
+        Menu menu = restaurantEJB.getCurrentMenu(today_severalMillsLater);
+
+        //Assert
+        assertNotNull(menu);
+        assertEquals(1, menu.getDishes().size());
+
+        assertTrue(menuCreated);
+        assertEquals(1, restaurantEJB.getDishes().size());
+    }
+
+    @Test
+    public void testGetAbsentPreviousMenu(){
+        //Arrange
+        Dish dish1 = createDish("foo");
+        Dish dish2 = createDish("bar");
+        Date today = getToday();
+        Date yesterday = getYesterday();
+        Date tomorrow = getTomorrow();
+
+        boolean menuYesterdayCreated =  restaurantEJB.createMenu(yesterday, dish1, dish2);
+        assertTrue(menuYesterdayCreated);
+
+        // Act 2 cases
+        Menu menu1 = restaurantEJB.getPreviousMenu(tomorrow);
+        Menu menu2 = restaurantEJB.getPreviousMenu(yesterday);
+
+        //Assert
+        assertNotNull(menu1);
+        assertNull(menu2);
+        assertEquals(2, menu1.getDishes().size());
+    }
+
+    @Test
+    public void testGetAbsentNextMenu(){
+        //Arrange
+        Dish dish1 = createDish("foo");
+        Dish dish2 = createDish("bar");
+        Date today = getToday();
+        Date yesterday = getYesterday();
+        Date tomorrow = getTomorrow();
+
+        boolean menuTomorrowCreated =  restaurantEJB.createMenu(tomorrow, dish1, dish2);
+        assertTrue(menuTomorrowCreated);
+
+        // Act 2 cases
+        Menu menu1 = restaurantEJB.getNextMenu(yesterday);
+        Menu menu2 = restaurantEJB.getNextMenu(tomorrow);
+
+
+        //Assert
+        assertNotNull(menu1);
+        assertNull(menu2);
+        assertEquals(2, menu1.getDishes().size());
+    }
+
+    @Test
+    public void testGetPreviousMenu(){
+        //Arrange
+        Dish dish1 = createDish("foo");
+        Dish dish2 = createDish("bar");
+        Date today = getToday();
+        Date yesterday = getYesterday();
+        Date tomorrow = getTomorrow();
+
+        boolean menuYesterdayCreated =  restaurantEJB.createMenu(yesterday, dish1, dish2);
+        assertTrue(menuYesterdayCreated);
+
+        //Act
+        Menu menu1 = restaurantEJB.getPreviousMenu(tomorrow);
+
+        //Assert
+        assertNotNull(menu1);
+        assertEquals(2, menu1.getDishes().size());
+    }
+
+//    create 3 menus, for today, tomorrow and yesterday
+//  1 verify that today has tomorrow as next, and yesterday as previous
+//  2 verify that tomorrow has no next, and today as previous
+//  3 verify that yesterday has no previous, and today as next
+    @Test
+    public void testThreeMenus(){
+        //Arrange
+        Dish dish1 = createDish("foo");
+        Dish dish2 = createDish("bar");
+        Date today = getToday();
+        Date yesterday = getYesterday();
+        Date tomorrow = getTomorrow();
+
+        //Act
+        boolean menuYesterdayCreated =  restaurantEJB.createMenu(yesterday, dish1);
+        boolean menuTodayCreated =  restaurantEJB.createMenu(today, dish1, dish2);
+        boolean menuTomorrowCreated =  restaurantEJB.createMenu(tomorrow, dish2);
+        assertEquals(2,restaurantEJB.getDishes().size());
+
+        // 1 verify that today has tomorrow as next, and yesterday as previous
+        Menu menuNext_fromToday = restaurantEJB.getNextMenu(today);
+        Menu menuPrevious_fromToday = restaurantEJB.getPreviousMenu(today);
+        assertTrue(menuNext_fromToday!=null && menuPrevious_fromToday!=null);
+        assertTrue(menuNext_fromToday.getDishes().stream().anyMatch(e->e.getName().equals(dish2.getName())));
+        assertTrue(menuPrevious_fromToday.getDishes().stream().anyMatch(e->e.getName().equals(dish1.getName())));
+
+        // 2 verify that tomorrow has no next, and today as previous
+        Menu menuNext_fromTomorrow = restaurantEJB.getNextMenu(tomorrow);
+        Menu menuPrevious_fromTomorrow = restaurantEJB.getPreviousMenu(tomorrow);
+        assertNull(menuNext_fromTomorrow);
+        assertNotNull(menuPrevious_fromTomorrow);
+        assertTrue(menuPrevious_fromTomorrow.getDishes().stream().anyMatch(e->e.getName().equals(dish1.getName())));
+        assertTrue(menuPrevious_fromTomorrow.getDishes().stream().anyMatch(e->e.getName().equals(dish2.getName())));
+
+        // 3 verify that yesterday has no previous, and today as next
+        Menu menuPrevious_fromYesterday = restaurantEJB.getPreviousMenu(yesterday);
+        Menu menuNext_fromYesterday = restaurantEJB.getNextMenu(yesterday);
+        assertNull(menuPrevious_fromYesterday);
+        assertNotNull(menuNext_fromYesterday);
+        assertTrue(menuNext_fromYesterday.getDishes().stream().anyMatch(e->e.getName().equals(dish1.getName())));
+        assertTrue(menuNext_fromYesterday.getDishes().stream().anyMatch(e->e.getName().equals(dish2.getName())));
+
+    }
+
+
+
+
+    /**
+     +------------------------------------------------------------+
+     | Additional tests                                           |
+     +------------------------------------------------------------+
+
+
+     +------------------------------------------------------------+
+     |DISH                                                        |
+     +------------------------------------------------------------+
+
+     */
     @Test
     public void testGetDish(){
         //Arrange
@@ -136,37 +305,9 @@ public class RestaurantEJBTest extends EjbTestBase  {
         assertEquals(1, restaurantEJB.getDishes().size());
     }
 
-    @Test
-    public void testGetMenuByDate(){
-        //Arrange
-        Dish dish = createDish("foo");
-        Date today1 = getToday();
-        boolean menuCreated =  restaurantEJB.createMenu(today1, dish);
 
-        //Act
-        Date today_severalMillsLater = getToday();
-        Menu menu = restaurantEJB.getMenu(today_severalMillsLater);
 
-        //Assert
-        assertNotNull(menu);
-        assertEquals(1, menu.getDishes().size());
 
-        assertTrue(menuCreated);
-        assertEquals(1, restaurantEJB.getDishes().size());
-    }
-
-    @Test
-    public void testTryCreateMenu_noDishes(){
-        //Arrange
-        Date today1 = getToday();
-
-        //Act
-        boolean menuCreated =  restaurantEJB.createMenu(today1);
-
-        //Assert
-        assertFalse(menuCreated);
-        assertEquals(0, restaurantEJB.getDishes().size());
-    }
 
     @Test
     public void testTryCreateMenu_oneDishNotExist(){
@@ -215,7 +356,7 @@ public class RestaurantEJBTest extends EjbTestBase  {
 
     @Test
     public void testGetNextMenu(){
-        //Arrange with dish = 'foo'
+        //Arrange
         Dish dish1 = createDish("foo");
         Dish dish2 = createDish("bar");
         Date today = getToday();
@@ -228,7 +369,7 @@ public class RestaurantEJBTest extends EjbTestBase  {
 
         // Act
         Menu menu1 = restaurantEJB.getNextMenu(yesterday);
-        Menu menu2 = restaurantEJB.getMenu(yesterday);
+        Menu menu2 = restaurantEJB.getCurrentMenu(yesterday);
 
         //Assert
         assertEquals(2, menu1.getDishes().size());
@@ -236,4 +377,35 @@ public class RestaurantEJBTest extends EjbTestBase  {
         assertEquals(menu1.getDateId(), menu2.getDateId());
     }
 
+    @Test
+    public void testGetCurrentMenu_onlyYesterdayMenuExists(){
+        //Arrange
+        Dish dish1 = createDish("foo");
+        Dish dish2 = createDish("bar");
+        Date today = getToday();
+        Date tomorrow = getTomorrow();
+        Date yesterday = getYesterday();
+        boolean menuYesterdayCreated =  restaurantEJB.createMenu(yesterday, dish1, dish2);
+        assertTrue(menuYesterdayCreated);
+
+        // Act
+        Menu menu = restaurantEJB.getCurrentMenu(today);
+
+        //Assert
+        assertEquals(2, menu.getDishes().size());
+        assertTrue(menu.getDishes().stream().anyMatch(d->d.getName().equals(dish1.getName())));
+        assertTrue(menu.getDishes().stream().anyMatch(d->d.getName().equals(dish2.getName())));
+    }
+
+    @Test
+    public void testGetCurrentMenu_noMenus(){
+        //Arrange
+        Date today = getToday();
+
+        //Act
+        Menu menu = restaurantEJB.getCurrentMenu(today);
+
+        //Assert
+        assertNull(menu);
+    }
 }
