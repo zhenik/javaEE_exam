@@ -8,6 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Stateless
@@ -64,22 +68,22 @@ public class RestaurantEJB implements Serializable {
         return true;
     }
 
+
     // I fetch first millisecond (beginning of the day)
     // the given date and persist it as dateId
+    // source:  https://stackoverflow.com/a/12679472/6769651
     private Date getFirstSecondOfDay(Date date){
-        Calendar c = GregorianCalendar.getInstance();
-        c.clear();
-        c.setTime(date);
-
-        int year = c.get(Calendar.YEAR);
-        int day = c.get(Calendar.DAY_OF_YEAR);
-        // need to clear day milliseconds
-        c.clear();
-        c.set(Calendar.DAY_OF_YEAR, day);
-        c.set(Calendar.YEAR, year);
-
-        return c.getTime();
+        LocalDateTime localDateTime = dateToLocalDateTime(date);
+        LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
+        return localDateTimeToDate(startOfDay);
     }
+    private Date localDateTimeToDate(LocalDateTime startOfDay) {
+        return Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    }
+    private LocalDateTime dateToLocalDateTime(Date date) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+    }
+
 
     public Menu getMenu(Date date){
         Date date1 = getFirstSecondOfDay(date);
