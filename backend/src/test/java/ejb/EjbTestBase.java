@@ -16,6 +16,8 @@ import javax.ejb.EJB;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -59,8 +61,7 @@ public abstract class EjbTestBase {
         return userEJB.createUser(user,password,"a","b","c", true);
     }
 
-    protected Dish createDish(){
-        String dishName="dish";
+    protected Dish createDish(String dishName){
         boolean b1 = restaurantEJB.createDish(dishName, "description");
         Dish dish = restaurantEJB.getDish(dishName);
 
@@ -71,7 +72,13 @@ public abstract class EjbTestBase {
         return dish;
     }
 
-    protected Date getToday(){
-        return Date.from(Instant.now());
-    }
+
+    protected Date getToday(){return Date.from(Instant.now());}
+
+    //http://www.java2s.com/Tutorials/Java_Date_Time/Example/Date/Create_today_tomorrow_and_yesterday_date.htm
+    protected Date getTomorrow(){return Date.from(Instant.now().plus(1,ChronoUnit.DAYS));}
+    protected Date getYesterday(){return Date.from(Instant.now().minus(1,ChronoUnit.DAYS));}
+
+
+
 }
