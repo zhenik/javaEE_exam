@@ -14,24 +14,13 @@
 
     <ui:define name="content">
 
-
-        <!--<c:if test="#{loginController.loggedIn}">-->
-            <!--<c:if test="#{loginController.getChef()}">-->
-                <!--<h:link value="Link to Dishes" outcome="/home.jsf"  id="dishesLink"/>-->
-                <!--<br/>-->
-                <!--<h:link value="Link to Menu" outcome="/home.jsf"  id="menusLink"/>-->
-                <!--<hr/>-->
-            <!--</c:if>-->
-        <!--</c:if>-->
-
-
         <c:choose>
             <c:when test="#{! loginController.loggedIn}">
                 <h3>Please login first</h3>
             </c:when>
 
             <c:otherwise>
-                <h:link value="Link to Dishes" outcome="/home.jsf"  id="dishesLink"/>
+                <h:link value="Link to Dishes" outcome="/dishes.jsf"  id="dishesLink"/>
                 <br/>
                 <h:link value="Link to Menu" outcome="/home.jsf"  id="menusLink"/>
                 <hr/>
