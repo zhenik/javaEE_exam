@@ -127,4 +127,10 @@ public class RestaurantEJB implements Serializable {
         return menu;
     }
 
+    public Menu getMenu(Date date){
+        Date date1 = getFirstSecondOfDay(date);
+        Menu menu = em.find(Menu.class,date1);
+        return menu;
+    }
+
 }

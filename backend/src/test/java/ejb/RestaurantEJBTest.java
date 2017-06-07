@@ -408,4 +408,20 @@ public class RestaurantEJBTest extends EjbTestBase  {
         //Assert
         assertNull(menu);
     }
+
+    @Test
+    public void testGetMenu(){
+        //Arrange
+        Dish dish1 = createDish("foo");
+        Dish dish2 = createDish("bar");
+        Date today = getToday();
+        boolean menuCreated =  restaurantEJB.createMenu(today, dish1, dish2);
+        assertTrue(menuCreated);
+
+        //Act
+        Menu menu = restaurantEJB.getMenu(today);
+
+        //Assert
+        assertNotNull(menu);
+    }
 }
