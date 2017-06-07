@@ -1,7 +1,7 @@
 package entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +13,7 @@ public class Menu {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(unique = true)
     private Date date;
