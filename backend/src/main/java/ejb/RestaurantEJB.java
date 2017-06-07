@@ -3,8 +3,10 @@ package ejb;
 import entity.Dish;
 import entity.Menu;
 
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.Serializable;
@@ -85,7 +87,7 @@ public class RestaurantEJB implements Serializable {
     }
 
 
-    public Menu getMenu(Date date){
+    public Menu getCurrentMenu(Date date){
         Date date1 = getFirstSecondOfDay(date);
         Menu menu = em.find(Menu.class,date1);
         if (menu==null){
@@ -98,20 +100,30 @@ public class RestaurantEJB implements Serializable {
     }
 
     public Menu getNextMenu(Date date){
+        Menu menu = null;
         Date date1 = getFirstSecondOfDay(date);
         Query query = em.createQuery("select m from Menu m where m.id > ?1 order by m.dateId");
         query.setParameter(1, date1);
         query.setMaxResults(1);
-        Menu menu = (Menu) query.getSingleResult();
+        try {
+            menu = (Menu) query.getSingleResult();
+        }catch (NoResultException e){
+            e.printStackTrace();
+        }
         return menu;
     }
 
     public Menu getPreviousMenu(Date date){
+        Menu menu = null;
         Date date1 = getFirstSecondOfDay(date);
         Query query = em.createQuery("select m from Menu m where m.id < ?1 order by m.dateId desc");
         query.setParameter(1, date1);
         query.setMaxResults(1);
-        Menu menu = (Menu) query.getSingleResult();
+        try {
+            menu = (Menu) query.getSingleResult();
+        }catch (NoResultException e){
+            e.printStackTrace();
+        }
         return menu;
     }
 
