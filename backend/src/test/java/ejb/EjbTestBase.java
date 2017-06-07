@@ -1,6 +1,8 @@
 package ejb;
 
 
+import entity.Dish;
+import entity.Menu;
 import entity.User;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -32,15 +34,17 @@ public abstract class EjbTestBase {
     @Before
     @After
     public void emptyDatabase(){
+        deleterEJB.deleteEntities(Menu.class);
+        deleterEJB.deleteEntities(Dish.class);
         deleterEJB.deleteEntities(User.class);// doesn't work due to @ElementCollection
     }
 
-    protected boolean createUser(String user){
-        return userEJB.createUser(user,"foo","a","b","c");
+    protected boolean createUser(String user,String password){
+        return userEJB.createUser(user,password,"a","b","c", false);
     }
 
-    protected boolean createUser(String user, String password){
-        return userEJB.createUser(user,password,"a","b","c");
+    protected boolean createChef(String user, String password){
+        return userEJB.createUser(user,password,"a","b","c", true);
     }
 
 }

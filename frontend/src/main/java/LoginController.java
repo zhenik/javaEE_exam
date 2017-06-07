@@ -19,6 +19,7 @@ public class LoginController implements Serializable {
     private String formFirstName;
     private String formMiddleName;
     private String formLastName;
+    private Boolean formChef=false;
 
     /**
      * The current user registered in this session
@@ -65,7 +66,7 @@ public class LoginController implements Serializable {
         boolean registered = false;
 
         try {
-            registered = userEJB.createUser(formUserName, formPassword, formFirstName, formMiddleName, formLastName);
+            registered = userEJB.createUser(formUserName, formPassword, formFirstName, formMiddleName, formLastName, formChef);
         } catch (Exception e){
         }
 
