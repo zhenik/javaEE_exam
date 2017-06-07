@@ -25,7 +25,40 @@
                 <h:link value="Link to Menu" outcome="/menu.jsf"  id="menusLink"/>
                 <hr/>
 
-                <h3>No Menu available</h3>
+                <c:choose>
+                <c:when test="#{menuController.menu==null}">
+                    <h3>No Menu available</h3>
+                </c:when>
+
+                    <c:set var="menu" value="#{menuController.menu}"/>
+                    <c:otherwise>
+                        <!--DISH LIST START-->
+
+
+
+                        <h3>Menu for
+                            <h:outputText value="#{menuController.menu.dateId}" >
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </h3>
+
+                        <c:set var="allDishes" value="#{menuController.menu.dishes}"/>
+                        <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
+                            <h:column>
+                                <f:facet name="header">Name</f:facet>
+                                <h:outputText value="#{dish.name}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Description</f:facet>
+                                <h:outputText value="#{dish.description}"/>
+                            </h:column>
+                        </h:dataTable>
+                        <!--DISH LIST END-->
+                    </c:otherwise>
+
+                </c:choose>
+
 
 
 
