@@ -61,7 +61,7 @@ public class MenuController implements Serializable {
         System.out.println(created+"");
 
         menuDishes = new HashMap<>(); // clean map
-        return "menu.jsf";
+        return "home.jsf";
     }
 
     public void updateMap(ValueChangeEvent event){
