@@ -35,12 +35,27 @@
                         <!--DISH LIST START-->
 
 
+                        <!--<h:link value="Show default" outcome="/home.jsf"  id="defaultLink"/>-->
+                        <!--<h:link value="Show next" outcome="/home.jsf"  id="nextLink"/>-->
+                        <!--<h:link value="Show previous" outcome="/home.jsf"  id="previousLink"/>-->
+
+                        <!--<h:commandLink id="Show default" value="Up" action="#{menuController.update()}" />-->
+                        <!--<br/>-->
+
+                        <!--<h:commandLink id="Show next" value="Down" action="#{menuController.update()}" />-->
+                        <!--<br/>-->
+
+                        <!--<h:commandLink id="Show previous" value="Down" action="#{menuController.update()}" />-->
+                        <!--<br/>-->
+
+
 
                         <h3>Menu for
                             <h:outputText value="#{menuController.menu.dateId}" >
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:outputText>
                         </h3>
+                        <br/>
 
                         <c:set var="allDishes" value="#{menuController.menu.dishes}"/>
                         <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
