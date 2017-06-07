@@ -87,7 +87,32 @@ public class RestaurantEJB implements Serializable {
 
     public Menu getMenu(Date date){
         Date date1 = getFirstSecondOfDay(date);
-        return em.find(Menu.class,date1);
+        Menu menu = em.find(Menu.class,date1);
+        if (menu==null){
+            menu = getNextMenu(date);
+            if (menu==null){
+                menu=getPreviousMenu(date);
+            }
+        }
+        return menu;
+    }
+
+    public Menu getNextMenu(Date date){
+        Date date1 = getFirstSecondOfDay(date);
+        Query query = em.createQuery("select m from Menu m where m.id > ?1 order by m.dateId");
+        query.setParameter(1, date1);
+        query.setMaxResults(1);
+        Menu menu = (Menu) query.getSingleResult();
+        return menu;
+    }
+
+    public Menu getPreviousMenu(Date date){
+        Date date1 = getFirstSecondOfDay(date);
+        Query query = em.createQuery("select m from Menu m where m.id < ?1 order by m.dateId desc");
+        query.setParameter(1, date1);
+        query.setMaxResults(1);
+        Menu menu = (Menu) query.getSingleResult();
+        return menu;
     }
 
 }
