@@ -16,24 +16,31 @@
 
 <h:body>
 
-    <h:outputText value="Event List" />
+    <h:outputText value="MyCantina Application" />
     <hr/>
-
-    <h:link value="Home" outcome="/home.jsf"  id="homeLink"/>
-    <br/>
-
     <c:choose>
         <c:when test="#{loginController.loggedIn}">
-            <h:outputText value="Hi #{loginController.registeredUser}!  " id="welcomeMessage"/>
+
+            <c:set var="userType" value="#{loginController.getChef()?('Chef'):('Customer')}"/>
+
+            <h:outputText value="Hi #{loginController.registeredUser}! Registered as #{userType}" id="welcomeMessage"/>
+
             <h:form id="logoutForm">
                 <h:commandButton value="Log Out" action="#{loginController.logOut}" id="logout" />
             </h:form>
+
         </c:when>
         <c:otherwise>
             <h:outputText value="Not logged in  "/>
             <h:button value="Log In" outcome="login.xhtml" id="login"/>
         </c:otherwise>
     </c:choose>
+    <hr/>
+
+    <h:link value="Home" outcome="/home.jsf"  id="homeLink"/>
+    <br/>
+
+
 
     <h1>
         <ui:insert name="title">Default title</ui:insert>

@@ -10,17 +10,39 @@
 
 <ui:composition template="layout.xhtml">
 
-    <ui:define name="title">Exam Home Page</ui:define>
+    <ui:define name="title">MyCantina Home Page</ui:define>
 
     <ui:define name="content">
 
 
         <!--<c:if test="#{loginController.loggedIn}">-->
-            <!--<h:button value="Create Event" outcome="newEvent.xhtml" id="createEvent"/>-->
+            <!--<c:if test="#{loginController.getChef()}">-->
+                <!--<h:link value="Link to Dishes" outcome="/home.jsf"  id="dishesLink"/>-->
+                <!--<br/>-->
+                <!--<h:link value="Link to Menu" outcome="/home.jsf"  id="menusLink"/>-->
+                <!--<hr/>-->
+            <!--</c:if>-->
         <!--</c:if>-->
 
 
-        <h2>Future something</h2>
+        <c:choose>
+            <c:when test="#{! loginController.loggedIn}">
+                <h3>Please login first</h3>
+            </c:when>
+
+            <c:otherwise>
+                <h:link value="Link to Dishes" outcome="/home.jsf"  id="dishesLink"/>
+                <br/>
+                <h:link value="Link to Menu" outcome="/home.jsf"  id="menusLink"/>
+                <hr/>
+                <h3>No Menu available</h3>
+            </c:otherwise>
+
+        </c:choose>
+
+        <!--<c:if test="#{ ! loginController.loggedIn}">-->
+            <!--<h3>Please login first</h3>-->
+        <!--</c:if>-->
 
         <!--<c:if test="#{loginController.loggedIn}">-->
             <!--<h:form id="showOnlyOwnCountryForm">-->
