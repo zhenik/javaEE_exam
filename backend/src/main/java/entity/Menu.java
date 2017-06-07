@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +19,7 @@ public class Menu {
     @Column(unique = true)
     private Date date;
 
+    @Size(min = 1)
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Dish> dishes;
 
