@@ -20,7 +20,7 @@ public class UserEJB implements Serializable{
     public UserEJB(){}
 
     public boolean createUser(String userId, String password, String firstName, String middleName, String lastName, Boolean chef) {
-        if (userId == null || userId.isEmpty() || password == null || password.isEmpty()) {
+        if (userId == null || userId.isEmpty() || password == null || password.trim().isEmpty() || password.trim().equals("")) {
             return false;
         }
 

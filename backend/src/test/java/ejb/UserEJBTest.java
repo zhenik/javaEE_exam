@@ -39,16 +39,73 @@ public class UserEJBTest extends EjbTestBase {
     }
 
     @Test
-    public void testCreateAUserWithEmpty(){
+    public void testCreateAUserWithEmpty_IdOrPassword(){
         //Arrange
-        String user = "    ";
+        String userId = "    ";
         String password = "password";
 
-        //Act
+        //Act 2 cases
         try {
-            createUser(user,password);
+            userEJB.createUser(userId,password,"name","middlename","lastname", false);
             fail();
         }catch (EJBException e){}
+
+        userId="new";
+        password="  ";
+        boolean created1 = userEJB.createUser(userId,password,"name","middlename","lastname", false);
+
+        //Assert
+        assertFalse(created1);
+
+
+    }
+
+    @Test
+    public void testCreateAUserWithEmpty_NameOrSurname(){
+        //Arrange
+        String user = "user";
+        String password = "password";
+        String name ="";
+        String lastname ="";
+
+        //Act 3 cases
+        try {
+            name="";
+            lastname="valid";
+            userEJB.createUser(user,password,name,"middlename",lastname, false);
+            fail();
+        }catch (EJBException e){}
+
+        try {
+            name="valid";
+            lastname="";
+            userEJB.createUser(user,password,name,"middlename",lastname, false);
+            fail();
+        }catch (EJBException e){}
+
+        try {
+            name=null;
+            lastname="";
+            userEJB.createUser(user,password,name,"middlename",lastname, false);
+            fail();
+        }catch (EJBException e){}
+    }
+
+    @Test
+    public void testSamePassword_DifferentHashAndSalt(){
+        //Arrange
+        String password = "password";
+        String first = "first";
+        String second = "second";
+
+        createUser(first,password);
+        createUser(second,password); //same password
+
+        User f = userEJB.getUser(first);
+        User s = userEJB.getUser(second);
+
+        assertNotEquals(f.getHash(), s.getHash());
+        assertNotEquals(f.getSalt(), s.getSalt());
     }
 
     @Test
@@ -76,6 +133,7 @@ public class UserEJBTest extends EjbTestBase {
         User user = userEJB.getUser(userId);
 
         //Assert
+        assertEquals(userId, user.getUserId());
         assertEquals("a", user.getFirstName());
         assertEquals("b",user.getMiddleName());
         assertEquals("c", user.getLastName());
@@ -83,21 +141,29 @@ public class UserEJBTest extends EjbTestBase {
     }
 
     @Test
-    public void testSamePassword_DifferentHashAndSalt(){
+    public void testVerifyPassword(){
         //Arrange
-        String password = "password";
-        String first = "first";
-        String second = "second";
+        String user = "user";
+        String userNotExistId = "not exist";
+        String correct = "correct";
+        String wrong = "wrong";
+        createUser(user, correct);
 
-        createUser(first,password);
-        createUser(second,password); //same password
+        //Act
+        boolean canLogin1 = userEJB.login(user, correct);
+        boolean canLogin2 = userEJB.login(user, wrong);
+        boolean canLogin3 = userEJB.login(userNotExistId, correct);
+        boolean canLogin4 = userEJB.login(null, correct);
 
-        User f = userEJB.getUser(first);
-        User s = userEJB.getUser(second);
-
-        assertNotEquals(f.getHash(), s.getHash());
-        assertNotEquals(f.getSalt(), s.getSalt());
+        //Assert
+        assertTrue(canLogin1);
+        assertFalse(canLogin2);
+        assertFalse(canLogin3);
+        assertFalse(canLogin4);
     }
+
+
+
 
 
 
