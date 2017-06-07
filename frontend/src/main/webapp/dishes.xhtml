@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="title">Dishes</ui:define>
+    <ui:define name="content">
+
+
+        <c:choose>
+
+            <c:when test="#{loginController.loggedIn}">
+
+                <!--NEW DISH START-->
+                <!--Accessible only for chefs-->
+                <c:if test="#{loginController.getChef()}">
+                    <h:form id="createDishForm">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Dish name (id) : "/>
+                            <h:inputText value="#{dishController.formDishName}" id="dishName"/>
+
+                            <h:outputLabel value="Description : "/>
+                            <h:inputTextarea value="#{dishController.formDishDescription}" id="createText"/>
+
+                            <h:commandButton value="Create" action="#{dishController.createDish}" id="createButton"/>
+                        </h:panelGrid>
+                    </h:form>
+                    <hr/>
+                </c:if>
+                <!--NEW DISH END-->
+
+
+                <c:set var="allDishes" value="#{dishController.dishes}"/>
+                <c:choose>
+                    <c:when test="#{allDishes.size()!=0}">
+                        <!--DISH LIST START-->
+                        <!--Accessible for both customers and chefs-->
+                        <h2>All dishes</h2>
+                        <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
+                            <h:column>
+                                <f:facet name="header">Name</f:facet>
+                                <h:outputText value="#{dish.name}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Description</f:facet>
+                                <h:outputText value="#{dish.description}"/>
+                            </h:column>
+                        </h:dataTable>
+                        <!--DISH LIST END-->
+                    </c:when>
+
+                    <c:otherwise>
+                        <p>No dishes</p>
+                    </c:otherwise>
+
+                </c:choose>
+
+            </c:when>
+
+
+            <c:otherwise>
+                <p>Please login in system</p>
+            </c:otherwise>
+
+
+        </c:choose>
+
+
+    </ui:define>
+</ui:composition>
+</html>
