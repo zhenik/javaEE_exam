@@ -1,5 +1,6 @@
 import ejb.RestaurantEJB;
 import entity.Dish;
+import entity.Menu;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,6 +20,7 @@ import java.util.*;
 @Named
 @SessionScoped
 public class MenuController implements Serializable {
+
     @EJB
     private RestaurantEJB restaurantEJB;
 
@@ -28,17 +30,45 @@ public class MenuController implements Serializable {
     private String date;
     private Map<String, Boolean> menuDishes;
 
-
     @PostConstruct
-    public void init(){
-        menuDishes=new HashMap<>();
-    }
+    public void init(){menuDishes=new HashMap<>();}
 
     public MenuController() {}
 
     public String getDate() {return null;}
-    public void setDate(String date) {
-        this.date = date;
+    public void setDate(String date) {this.date = date;}
+    public Map<String, Boolean> getMenuDishes() {return menuDishes;}
+    public void setMenuDishes(Map<String, Boolean> menuDishes) {this.menuDishes = menuDishes;}
+
+    // Create menu method
+    public String save() {
+
+        System.out.println(menuDishes.toString()); //debug
+
+        if (!loginController.isLoggedIn()) return "login.jsf"; // redirect if not logged
+
+        Date date = parseDate();
+        if (date == null) {return "menu.jsf";} // date cannot be parsed
+
+        Menu menu = restaurantEJB.getMenu(date);
+        if (menu != null) {return "menu.jsf";} // menu already exists
+
+        Dish[] dishesForMenu = getDishesFromMap();
+        if (dishesForMenu.length<1)return "menu.jsf";  // no dishes attached
+
+        // Create menu
+        boolean created = restaurantEJB.createMenu(date, dishesForMenu);
+        System.out.println(created+"");
+
+        menuDishes = new HashMap<>(); // clean map
+        return "menu.jsf";
+    }
+
+    public void updateMap(ValueChangeEvent event){
+        String dishName =(String) ((UIInput) event.getSource()).getAttributes().get("dishName");
+        Boolean value = (Boolean) event.getNewValue();
+        menuDishes.put(dishName,value);
+        System.out.println(dishName + "|"+value);
     }
 
     private Date parseDate(){
@@ -57,21 +87,17 @@ public class MenuController implements Serializable {
         return date1;
     }
 
-    public String save() {
-        System.out.println(menuDishes.toString());
-        menuDishes=new HashMap<>();
-        return "menu.jsf";
-    }
+    private Dish[] getDishesFromMap() {
+        List<Dish> temp = new ArrayList<>();
 
-    public Map<String, Boolean> getMenuDishes() {return menuDishes;}
-    public void setMenuDishes(Map<String, Boolean> menuDishes) {this.menuDishes = menuDishes;}
-
-
-    public void updateMap(ValueChangeEvent event){
-        String dishName =(String) ((UIInput) event.getSource()).getAttributes().get("dishName");
-        Boolean value = (Boolean) event.getNewValue();
-        menuDishes.put(dishName,value);
-        System.out.println(dishName + "|"+value);
-
+        for (Map.Entry<String, Boolean> entry : menuDishes.entrySet()) {
+            if (entry.getValue()) {
+                temp.add(restaurantEJB.getDish(entry.getKey()));
+            }
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+        }
+        Dish[] dishes = new Dish[temp.size()];
+        temp.toArray(dishes);
+        return dishes;
     }
 }
