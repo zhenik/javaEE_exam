@@ -22,64 +22,12 @@
             <c:otherwise>
                 <h:link value="Link to Dishes" outcome="/dishes.jsf"  id="dishesLink"/>
                 <br/>
-                <h:link value="Link to Menu" outcome="/home.jsf"  id="menusLink"/>
+                <h:link value="Link to Menu" outcome="/menu.jsf"  id="menusLink"/>
                 <hr/>
                 <h3>No Menu available</h3>
             </c:otherwise>
-
         </c:choose>
 
-        <!--<c:if test="#{ ! loginController.loggedIn}">-->
-            <!--<h3>Please login first</h3>-->
-        <!--</c:if>-->
-
-        <!--<c:if test="#{loginController.loggedIn}">-->
-            <!--<h:form id="showOnlyOwnCountryForm">-->
-                <!--<h:selectBooleanCheckbox value="#{eventController.showOnlyOwnCountry}"-->
-                                         <!--id="showOnlyOwnCountry" onclick="submit()"/>-->
-                <!--<h:outputLabel for="showOnlyOwnCountry" value="Only #{loggingController.userCountry}"/>-->
-            <!--</h:form>-->
-        <!--</c:if>-->
-
-        <!--<c:choose>-->
-            <!--<c:when test="#{eventController.events.size() == 0}">-->
-                <!--<h:outputText value="No events yet :( Be the first to create one!"/>-->
-            <!--</c:when>-->
-
-            <!--<c:otherwise>-->
-
-                <!--<h:dataTable value="#{eventController.events}" var="event" border="1" id="eventTable">-->
-                    <!--<h:column>-->
-                        <!--<f:facet name="header">Country</f:facet>-->
-                        <!--<h:outputText value="#{event.country}"/>-->
-                    <!--</h:column>-->
-                    <!--<h:column>-->
-                        <!--<f:facet name="header">Title</f:facet>-->
-                        <!--<h:outputText value="#{event.title}"/>-->
-                    <!--</h:column>-->
-                    <!--<h:column>-->
-                        <!--<f:facet name="header">Location</f:facet>-->
-                        <!--<h:outputText value="#{event.location}"/>-->
-                    <!--</h:column>-->
-                    <!--<h:column>-->
-                        <!--<f:facet name="header">Participants</f:facet>-->
-                        <!--<h:outputText value="#{fn:length(event.attendingUsers)}"/>-->
-                    <!--</h:column>-->
-
-                    <!--<c:if test="#{loggingController.loggedIn}">-->
-                        <!--<h:column>-->
-                            <!--<f:facet name="header">Going</f:facet>-->
-                            <!--<h:form>-->
-                                <!--<h:selectBooleanCheckbox-->
-                                        <!--value="#{eventController.attendMap[event.id]}"-->
-                                        <!--onclick="submit()"-->
-                                        <!--valueChangeListener="#{eventController.updateAttendance(event.id, ! eventController.attendMap[event.id])}"/>-->
-                            <!--</h:form>-->
-                        <!--</h:column>-->
-                    <!--</c:if>-->
-                <!--</h:dataTable>-->
-            <!--</c:otherwise>-->
-        <!--</c:choose>-->
 
     </ui:define>
 
