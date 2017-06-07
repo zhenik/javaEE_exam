@@ -33,6 +33,9 @@
                 <h:outputLabel value="Last name : "/>
                 <h:inputText value="#{loginController.formLastName}" id="lastName"/>
 
+                <h:outputLabel value="Chef: "/>
+                <h:selectBooleanCheckbox value="#{loginController.formChef}" id="chef"/>
+
             </h:panelGrid>
 
             <h:commandButton value="Create" action="#{loginController.registerNew}" id="createButton"/>
