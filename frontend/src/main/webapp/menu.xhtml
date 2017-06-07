@@ -11,46 +11,53 @@
     <ui:define name="title">Menu</ui:define>
     <ui:define name="content">
 
+        <c:choose>
 
-        <h:form>
-            <h:panelGrid columns="3">
-                Menu Date :
-                <h:inputText id="date" value="#{menuController.date}"
-                             size="20" required="true"
-                             label="Date format error dd-MM-yyyy" >
-                    <f:convertDateTime pattern="dd-MM-yyyy" />
-                </h:inputText>
-                <h:message for="date" style="color:red" />
-            </h:panelGrid>
-            <!--<h:commandButton value="Create" action="#{menuController.someMethod()}" />-->
-            <h:commandButton value="Create" action="#{menuController.save()}" />
-
-            <br/>
-
-            <!--DISH LIST START-->
-            <h:outputText value="Dishes" />
-            <c:set var="dishMap" value="#{menuController.menuDishes}"/>
-            <c:set var="allDishes" value="#{dishController.dishes}"/>
-            <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
-                <h:column>
-                    <h:outputText value="#{dish.name}"/>
-                </h:column>
-                <h:column>
-                    <h:selectBooleanCheckbox
-                            value="#{dishMap[dish.name]}"
-                            valueChangeListener="#{menuController.updateMap}">
-                    <f:attribute name="dishName" value="#{dish.name}" />
-                    </h:selectBooleanCheckbox>
-                </h:column>
-            </h:dataTable>
-            <!--DISH LIST END-->
+            <c:when test="#{! loginController.loggedIn}">
+                <h3>Please login first</h3>
+            </c:when>
 
 
+            <c:otherwise>
+                <h:form>
+                    <h:panelGrid columns="3">
+                        Menu Date :
+                        <h:inputText id="date" value="#{menuController.date}"
+                                     size="20" required="true"
+                                     label="Date format error dd-MM-yyyy">
+                            <f:convertDateTime pattern="dd-MM-yyyy"/>
+                        </h:inputText>
+                        <h:message for="date" style="color:red"/>
+                    </h:panelGrid>
+                    <h:commandButton value="Create" action="#{menuController.save()}"/>
+
+                    <br/>
 
 
-        </h:form>
+                    <!--DISH LIST START-->
+                    <h:outputText value="Dishes"/>
+                    <c:set var="dishMap" value="#{menuController.menuDishes}"/>
+                    <c:set var="allDishes" value="#{dishController.dishes}"/>
+                    <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
+                        <h:column>
+                            <h:outputText value="#{dish.name}"/>
+                        </h:column>
+                        <h:column>
+                            <h:selectBooleanCheckbox
+                                    value="#{dishMap[dish.name]}"
+                                    valueChangeListener="#{menuController.updateMap}">
+                                <f:attribute name="dishName" value="#{dish.name}"/>
+                            </h:selectBooleanCheckbox>
+                        </h:column>
+                    </h:dataTable>
+                    <!--DISH LIST END-->
 
 
+                </h:form>
+            </c:otherwise>
+
+
+        </c:choose>
     </ui:define>
 
 </ui:composition>
