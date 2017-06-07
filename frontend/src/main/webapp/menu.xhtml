@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="title">Menu</ui:define>
+    <ui:define name="content">
+
+
+        <h:form>
+            <h:panelGrid columns="3">
+                Menu Date :
+                <h:inputText id="date" value="#{menuController.date}"
+                             size="20" required="true"
+                             label="Date format error dd-MM-yyyy" >
+                    <f:convertDateTime pattern="dd-MM-yyyy" />
+                </h:inputText>
+                <h:message for="date" style="color:red" />
+            </h:panelGrid>
+            <!--<h:commandButton value="Create" action="#{menuController.someMethod()}" />-->
+            <h:commandButton value="Create" action="#{menuController.save()}" />
+
+            <br/>
+
+            <!--DISH LIST START-->
+            <h:outputText value="Dishes" />
+            <c:set var="dishMap" value="#{menuController.menuDishes}"/>
+            <c:set var="allDishes" value="#{dishController.dishes}"/>
+            <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
+                <h:column>
+                    <h:outputText value="#{dish.name}"/>
+                </h:column>
+                <h:column>
+                    <h:selectBooleanCheckbox
+                            value="#{dishMap[dish.name]}"
+                            valueChangeListener="#{menuController.updateMap}">
+                    <f:attribute name="dishName" value="#{dish.name}" />
+                    </h:selectBooleanCheckbox>
+                </h:column>
+            </h:dataTable>
+            <!--DISH LIST END-->
+
+
+
+
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>
+</html>
