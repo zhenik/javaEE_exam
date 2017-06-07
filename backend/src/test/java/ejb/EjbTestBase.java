@@ -26,6 +26,8 @@ public abstract class EjbTestBase {
 
     @EJB
     protected UserEJB userEJB;
+    @EJB
+    protected RestaurantEJB restaurantEJB;
 
     @EJB
     private DeleterEJB deleterEJB;
