@@ -21,14 +21,15 @@ public class CreateUserPageObject extends PageObject {
     }
 
     public HomePageObject createUser(String userId, String password, String confirmPassword,
-                                     String firstName, String lastName){
+                                     String firstName,String middlename, String lastName, Boolean chef){
 
         setText("createUserForm:userName",userId);
         setText("createUserForm:password",password);
         setText("createUserForm:confirmPassword",confirmPassword);
         setText("createUserForm:firstName",firstName);
+        setText("createUserForm:middleName",middlename);
         setText("createUserForm:lastName",lastName);
-
+        if (chef){driver.findElement(By.id("createUserForm:chef")).click();}
 //        try {
 //            new Select(driver.findElement(By.id("createUserForm:country"))).selectByVisibleText(country);
 //        } catch (Exception e){

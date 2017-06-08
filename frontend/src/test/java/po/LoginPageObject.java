@@ -22,10 +22,10 @@ public class LoginPageObject extends PageObject {
         return driver.getTitle().equals("Login");
     }
 
-    public HomePageObject clickLogin(String userName, String password){
+    public HomePageObject clickLogin(String userName){
 
         setText("loginForm:userName",userName);
-        setText("loginForm:password",password);
+        setText("loginForm:password","password");
         driver.findElement(By.id("loginForm:loginButton")).click();
         waitForPageToLoad();
 

@@ -22,54 +22,72 @@ public class WebPageIT extends WebTestBase {
         assertFalse(home.isLoggedIn());
     }
 
-    @Test
-    public void testHomePage(){
-        home.toStartingPage();
-        assertTrue(home.isOnPage());
-    }
+
     @Test
     public void testLoginLink(){
+        //Act
         LoginPageObject login = home.toLogin();
+
+        //Assert
         assertTrue(login.isOnPage());
     }
 
     @Test
     public void testLoginWrongUser(){
+        //Arrange
         LoginPageObject login = home.toLogin();
-        HomePageObject home = login.clickLogin(getUniqueId(),"foo");
+
+        //Act
+        HomePageObject home = login.clickLogin(getUniqueId());
+
+        //Assert
         assertNull(home);
         assertTrue(login.isOnPage());
     }
 
-    @Test
-    public void testLogin(){
-        String userId = getUniqueId();
-        createAndLogNewUser(userId, "Joe", "Black");
-        home.logout();
 
+    @Test
+    public void testLoginCustomer(){
+        //Arrange
+        String userId = getUniqueId();
+
+        //Act
+        createAndLogNewUser(userId,false);
+        home.logout();
         assertFalse(home.isLoggedIn());
         LoginPageObject login = home.toLogin();
-        home = login.clickLogin(userId, "foo");
+        home = login.clickLogin(userId);
+
+        boolean isLinkToDishes = home.isLinkDishesVisible();
+        boolean isLinkMenus = home.isLinkMenusVisible();
+        boolean isChef = home.isChef();
+        boolean isCustomer = home.isCustomer();
+
+        //Assert
+        assertFalse(isLinkToDishes);
+        assertFalse(isLinkMenus);
+        assertFalse(isChef);
+        assertTrue(isCustomer);
 
         assertNotNull(home);
         assertTrue(home.isOnPage());
         assertTrue(home.isLoggedIn(userId));
     }
-
-    @Test
-    public void testCreateValidUser(){
-        LoginPageObject login = home.toLogin();
-        CreateUserPageObject create = login.clickCreateNewUser();
-        assertTrue(create.isOnPage());
-
-        String userName = getUniqueId();
-
-        HomePageObject home = create.createUser(userName,"foo","foo","Foo","foo");
-        assertNotNull(home);
-        assertTrue(home.isOnPage());
-        assertTrue(home.isLoggedIn(userName));
-
-        home.logout();
-        assertFalse(home.isLoggedIn());
-    }
+//
+//    @Test
+//    public void testCreateValidUser(){
+//        LoginPageObject login = home.toLogin();
+//        CreateUserPageObject create = login.clickCreateNewUser();
+//        assertTrue(create.isOnPage());
+//
+//        String userName = getUniqueId();
+//
+//        HomePageObject home = create.createUser(userName,"foo","foo","Foo","foo");
+//        assertNotNull(home);
+//        assertTrue(home.isOnPage());
+//        assertTrue(home.isLoggedIn(userName));
+//
+//        home.logout();
+//        assertFalse(home.isLoggedIn());
+//    }
 }

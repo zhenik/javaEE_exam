@@ -98,11 +98,18 @@ public class WebTestBase {
     }
 
 
-    protected static void createAndLogNewUser(String userId, String name, String surname) {
+    protected static void createAndLogNewUser(String userId,Boolean chef) {
         home.logout();
         LoginPageObject login = home.toLogin();
         CreateUserPageObject create = login.clickCreateNewUser();
-        create.createUser(userId,"foo","foo",name,surname);
+        create.createUser(
+                userId,
+                "password",
+                "password",
+                "firstName",
+                "middlename",
+                "lastName",
+                chef);
         assertTrue(home.isLoggedIn(userId));
     }
 
