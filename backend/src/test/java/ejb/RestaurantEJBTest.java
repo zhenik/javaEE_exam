@@ -7,8 +7,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJBException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.Assert.*;
 
@@ -424,4 +428,27 @@ public class RestaurantEJBTest extends EjbTestBase  {
         //Assert
         assertNotNull(menu);
     }
+
+
+    @Test
+    public void testDate(){
+        //Arrange
+        Dish dish1 = createDish("foo");
+        Date today = getToday();
+        boolean menuCreated =  restaurantEJB.createMenu(today, dish1);
+        assertTrue(menuCreated);
+        Menu menu = restaurantEJB.getMenu(today);
+        assertNotNull(menu);
+
+        //Act
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate1 = formatter.format(today).trim();
+        String formattedDate2 = formatter.format(menu.getDateId()).trim();
+
+        //Assert
+        assertTrue(formattedDate1.equals(formattedDate2));
+
+
+    }
+
 }
