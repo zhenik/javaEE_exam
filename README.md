@@ -22,7 +22,9 @@ They are named the same way.
 
 All tests from task (E7) locates in frontend module in MyCantinaIT.  
 
-Rest tests needs to check additional functionality and constraints.
+Rest tests needs to check additional functionality and constraints.  
+(E8) Coverage report total: `96%` 
+
 
 ## Extra functionality (E9)
 * User roles (nonRegistered, Customer, Chef)  
@@ -43,6 +45,8 @@ can: create entities(dish, menu), delete entity menu, travers all pages on webap
 Arquillian tests UserEJBTest in backend module  
 Arquillian tests at the end of class RestaurantEJBTest in backend module  
 Selenium tests WebPageIT in frontend module  
+
+* travis for Arquillian test
 
 
 
