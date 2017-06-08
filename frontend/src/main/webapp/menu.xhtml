@@ -33,7 +33,7 @@
 
                     <c:otherwise>
                         <!--DATE START-->
-                        <h:form>
+                        <h:form id="createMenuForm">
                             <h:panelGrid columns="3">
                                 Menu Date :
                                 <h:inputText id="date" value="#{menuCreateController.date}"
@@ -43,7 +43,7 @@
                                 </h:inputText>
                                 <h:message for="date" style="color:red"/>
                             </h:panelGrid>
-                            <h:commandButton value="Create" action="#{menuCreateController.save()}"/>
+                            <h:commandButton value="Create" action="#{menuCreateController.save()}" id="createMenuButton"/>
                         <!--DATE END-->
                             <br/>
 
@@ -54,6 +54,7 @@
 
                             <!--DISH LIST START-->
                             <c:set var="dishMap" value="#{menuCreateController.menuDishes}"/>
+
                             <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
                                 <h:column>
                                     <h:outputText value="#{dish.name}"/>
@@ -61,13 +62,13 @@
                                 <h:column>
                                     <h:selectBooleanCheckbox
                                             value="#{dishMap[dish.name]}"
-                                            valueChangeListener="#{menuCreateController.updateMap}">
+                                            valueChangeListener="#{menuCreateController.updateMap}"
+                                            id="attach">
                                         <f:attribute name="dishName" value="#{dish.name}"/>
                                     </h:selectBooleanCheckbox>
                                 </h:column>
                             </h:dataTable>
                             <!--DISH LIST END-->
-
                         </h:form>
 
                     </c:otherwise>
