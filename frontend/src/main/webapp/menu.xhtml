@@ -34,16 +34,18 @@
                     <c:otherwise>
                         <!--DATE START-->
                         <h:form id="createMenuForm">
-                            <h:panelGrid columns="3">
-                                Menu Date :
-                                <h:inputText id="date" value="#{menuCreateController.date}"
-                                             size="20" required="true"
-                                             label="Date format error dd-MM-yyyy">
-                                    <f:convertDateTime pattern="dd-MM-yyyy"/>
-                                </h:inputText>
-                                <h:message for="date" style="color:red"/>
-                            </h:panelGrid>
-                            <h:commandButton value="Create" action="#{menuCreateController.save()}" id="createMenuButton"/>
+                            <c:if test="#{loginController.chef}">
+                                <h:panelGrid columns="3">
+                                    Menu Date :
+                                    <h:inputText id="date" value="#{menuCreateController.date}"
+                                                 size="20" required="true"
+                                                 label="Date format error dd-MM-yyyy">
+                                        <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                    </h:inputText>
+                                    <h:message for="date" style="color:red"/>
+                                </h:panelGrid>
+                                <h:commandButton value="Create" action="#{menuCreateController.save()}" id="createMenuButton"/>
+                            </c:if>
                         <!--DATE END-->
                             <br/>
 
@@ -59,14 +61,16 @@
                                 <h:column>
                                     <h:outputText value="#{dish.name}"/>
                                 </h:column>
-                                <h:column>
-                                    <h:selectBooleanCheckbox
-                                            value="#{dishMap[dish.name]}"
-                                            valueChangeListener="#{menuCreateController.updateMap}"
-                                            id="attach">
-                                        <f:attribute name="dishName" value="#{dish.name}"/>
-                                    </h:selectBooleanCheckbox>
-                                </h:column>
+                                <c:if test="#{loginController.chef}">
+                                    <h:column>
+                                        <h:selectBooleanCheckbox
+                                                value="#{dishMap[dish.name]}"
+                                                valueChangeListener="#{menuCreateController.updateMap}"
+                                                id="attach">
+                                            <f:attribute name="dishName" value="#{dish.name}"/>
+                                        </h:selectBooleanCheckbox>
+                                    </h:column>
+                                </c:if>
                             </h:dataTable>
                             <!--DISH LIST END-->
                         </h:form>
