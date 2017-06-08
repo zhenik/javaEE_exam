@@ -6,6 +6,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Named
@@ -30,7 +32,9 @@ public class DishController implements Serializable {
 
     public List<Dish> getDishes(){
         if (loginController.isLoggedIn()){
-            return restaurantEJB.getDishes();
+            List<Dish> dishes = restaurantEJB.getDishes();
+            Collections.sort(dishes);
+            return dishes;
         }
         return null;
     }
