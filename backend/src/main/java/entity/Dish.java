@@ -1,5 +1,7 @@
 package entity;
 
+import validation.NotEmpty;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
@@ -15,6 +17,7 @@ public class Dish implements Comparable<Dish>{
     @Id
     @Pattern(regexp = "[A-Za-z0-9]{1,32}")
     private String name;
+    @NotEmpty
     private String description;
 
     @NotNull
