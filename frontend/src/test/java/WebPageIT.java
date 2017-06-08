@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.NoSuchElementException;
 import po.CreateUserPageObject;
+import po.DishesPageObject;
 import po.HomePageObject;
 import po.LoginPageObject;
 
@@ -10,18 +12,6 @@ import static org.junit.Assume.assumeTrue;
 
 
 public class WebPageIT extends WebTestBase {
-    @Before
-    public void startFromInitialPage() {
-
-        assumeTrue(JBossUtil.isJBossUpAndRunning());
-
-        home = new HomePageObject(getDriver());
-        home.toStartingPage();
-        home.logout();
-        assertTrue(home.isOnPage());
-        assertFalse(home.isLoggedIn());
-    }
-
 
     @Test
     public void testLoginLink(){
@@ -47,7 +37,7 @@ public class WebPageIT extends WebTestBase {
 
 
     @Test
-    public void testLoginCustomer(){
+    public void testRegisterAndLoginCustomer(){
         //Arrange
         String userId = getUniqueId();
 
@@ -73,6 +63,64 @@ public class WebPageIT extends WebTestBase {
         assertTrue(home.isOnPage());
         assertTrue(home.isLoggedIn(userId));
     }
+
+    @Test
+    public void testRegisterAndLoginLoginChef(){
+        //Arrange
+        String userId = getUniqueId();
+
+        //Act
+        createAndLogNewUser(userId,true);
+        home.logout();
+        assertFalse(home.isLoggedIn());
+        LoginPageObject login = home.toLogin();
+        home = login.clickLogin(userId);
+
+        boolean isLinkToDishes = home.isLinkDishesVisible();
+        boolean isLinkMenus = home.isLinkMenusVisible();
+        boolean isChef = home.isChef();
+        boolean isCustomer = home.isCustomer();
+
+        //Assert
+        assertTrue(isLinkToDishes);
+        assertTrue(isLinkMenus);
+        assertTrue(isChef);
+        assertFalse(isCustomer);
+
+        assertNotNull(home);
+        assertTrue(home.isOnPage());
+        assertTrue(home.isLoggedIn(userId));
+    }
+
+    @Test
+    public void testDishesLink_nonRegisteredUser(){
+
+        // 1 Act & Assert NON registered
+        DishesPageObject dishesPage=null;
+        try{
+            dishesPage = home.toDishes();
+            fail();
+        }catch (NoSuchElementException e){}
+        assertNull(dishesPage);
+
+        // 2 Act & Assert CUSTOMER
+        try{
+            String userId = getUniqueId();
+            createAndLogNewUser(userId,false);
+            dishesPage = home.toDishes();
+            fail();
+        }catch (NoSuchElementException e){}
+        assertNull(dishesPage);
+
+        // 3 Act & Assert CHEF
+        String userId = getUniqueId();
+        createAndLogNewUser(userId,true);
+        dishesPage = home.toDishes();
+
+        assertNotNull(dishesPage);
+        assertTrue(dishesPage.isOnPage());
+    }
+
 //
 //    @Test
 //    public void testCreateValidUser(){

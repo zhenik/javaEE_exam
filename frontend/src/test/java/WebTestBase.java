@@ -1,4 +1,5 @@
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,10 +13,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
 
 public class WebTestBase {
+    @Before
+    public void startFromInitialPage() {
+
+        assumeTrue(JBossUtil.isJBossUpAndRunning());
+
+        home = new HomePageObject(getDriver());
+        home.toStartingPage();
+        home.logout();
+        assertTrue(home.isOnPage());
+        assertFalse(home.isLoggedIn());
+    }
 
     private static final AtomicLong counter = new AtomicLong(System.currentTimeMillis());
 
@@ -93,8 +107,8 @@ public class WebTestBase {
         return "foo" + counter.incrementAndGet();
     }
 
-    protected static String getUniqueTitle() {
-        return "A title: " + counter.incrementAndGet();
+    protected static String getUniqueDishName() {
+        return "DishName" + counter.incrementAndGet();
     }
 
 
