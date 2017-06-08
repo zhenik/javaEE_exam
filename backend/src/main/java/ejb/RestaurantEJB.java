@@ -134,4 +134,23 @@ public class RestaurantEJB implements Serializable {
         return menu;
     }
 
+    public boolean removeMenu(Date date){
+
+        if (date==null)return false; // date is null
+
+        Date date1 = getFirstSecondOfDay(date);
+        Menu menu = em.find(Menu.class, date1);
+
+        if (menu==null){return false;}  // menu is not exists
+
+        em.remove(menu);
+        return true;
+    }
+
+    public List<Menu> getMenus(){
+        Query query = em.createQuery("SELECT m FROM Menu m");
+        List<Menu> menus = query.getResultList();
+        return menus;
+    }
+
 }

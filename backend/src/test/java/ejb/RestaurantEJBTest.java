@@ -468,4 +468,44 @@ public class RestaurantEJBTest extends EjbTestBase  {
         assertEquals("foo",list.get(2).getName());
     }
 
+    @Test
+    public void testRemoveMenu(){
+        //Arrange
+        Dish dish = createDish("foo");
+        Date today1 = getToday();
+        boolean menuCreated =  restaurantEJB.createMenu(today1, dish);
+        assertTrue(menuCreated);
+
+        //Act
+            // menu exists
+        boolean deleted1 = restaurantEJB.removeMenu(getToday());
+
+            // menu not exist
+        boolean deleted2 = restaurantEJB.removeMenu(getToday());
+
+        //Assert
+        assertTrue(deleted1);
+        assertFalse(deleted2);
+    }
+
+    @Test
+    public void testGetMenus(){
+        //Arrange
+        Dish dish = createDish("foo");
+        Date today = getToday();
+        Date tomorrow = getTomorrow();
+        boolean menuCreated1 =  restaurantEJB.createMenu(today, dish);
+        boolean menuCreated2 =  restaurantEJB.createMenu(tomorrow, dish);
+        assertTrue(menuCreated1);
+        assertTrue(menuCreated2);
+
+        //Act
+        List<Menu> menus = restaurantEJB.getMenus();
+
+        //Assert
+        assertEquals(2,menus.size());
+    }
+
+
+
 }
