@@ -20,51 +20,56 @@
             </c:when>
 
             <c:otherwise>
-                <h:link value="Link to Dishes" outcome="/dishes.jsf"  id="dishesLink"/>
-                <br/>
-                <h:link value="Link to Menu" outcome="/menu.jsf"  id="menusLink"/>
-                <hr/>
+
+                <c:if test="#{loginController.chef}">
+                    <h:link value="Link to Dishes" outcome="/dishes.jsf" id="dishesLink"/>
+                    <br/>
+                    <h:link value="Link to Menu" outcome="/menu.jsf" id="menusLink"/>
+                    <hr/>
+                </c:if>
 
                 <c:choose>
-                <c:when test="#{menuController.menu==null}">
-                    <h3>No Menu available</h3>
-                </c:when>
+
+                    <c:when test="#{menuController.menu==null}">
+                        <h3>No Menu available</h3>
+                    </c:when>
 
                     <c:set var="menu" value="#{menuController.menu}"/>
                     <c:otherwise>
                         <!--DISH LIST START-->
 
 
-
                         <h:form>
-                            <h:commandLink id="defaultShowLink" value="Show default" action="#{menuController.showDefault()}" />
+                            <h:commandLink id="defaultShowLink" value="Show default"
+                                           action="#{menuController.showDefault()}"/>
                             <br/>
                             <c:if test="#{menuController.nextMenu!=null}">
                                 <h:commandLink
                                         id="nextShowLink"
                                         value="Show next (#{menuController.getDateAsString(menuController.nextMenu.dateId)})"
-                                        action="#{menuController.showNext()}" />
+                                        action="#{menuController.showNext()}"/>
                                 <br/>
                             </c:if>
                             <c:if test="#{menuController.previousMenu!=null}">
                                 <h:commandLink
                                         id="previousShowLink"
                                         value="Show previous (#{menuController.getDateAsString(menuController.previousMenu.dateId)})"
-                                        action="#{menuController.showPrevious()}" />
+                                        action="#{menuController.showPrevious()}"/>
                                 <br/>
                             </c:if>
                         </h:form>
 
                         <!--Does NOT parse DATE correct-->
                         <!--<h3>Menu for-->
-                            <!--<h:outputText value="#{menuController.menu.dateId}" >-->
-                                <!--<f:convertDateTime pattern="dd-MM-yyyy" />-->
-                            <!--</h:outputText>-->
+                        <!--<h:outputText value="#{menuController.menu.dateId}" >-->
+                        <!--<f:convertDateTime pattern="dd-MM-yyyy" />-->
+                        <!--</h:outputText>-->
                         <!--</h3>-->
 
                         <c:if test="#{menuController.currentDate!=null}">
                             <h3>Menu for
-                                <h:outputText value="#{menuController.getDateAsString(menuController.currentDate)}" id="currentDateId" />
+                                <h:outputText value="#{menuController.getDateAsString(menuController.currentDate)}"
+                                              id="currentDateId"/>
                             </h3>
                             <br/>
                         </c:if>
@@ -85,10 +90,6 @@
                     </c:otherwise>
 
                 </c:choose>
-
-
-
-
 
 
             </c:otherwise>
