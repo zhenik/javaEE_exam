@@ -39,6 +39,7 @@ public class DishController implements Serializable {
     }
 
     public void createDish(){
+//        if (formDishDescription==null || formDishDescription.isEmpty())return;
         boolean b = restaurantEJB.createDish(formDishName, formDishDescription);
         clearFields();
     }

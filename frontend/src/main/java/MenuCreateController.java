@@ -46,13 +46,13 @@ public class MenuCreateController implements Serializable {
         if (!loginController.isLoggedIn()) return "login.jsf"; // redirect if not logged
 
         Date date = parseDate();
-        if (date == null) {return "menu.jsf";} // date cannot be parsed
+        if (date == null) {return "newMenu.jsf";} // date cannot be parsed
 
         Menu menu = restaurantEJB.getMenu(date);
-        if (menu != null) {return "menu.jsf";} // menu already exists
+        if (menu != null) {return "newMenu.jsf";} // menu already exists
 
         Dish[] dishesForMenu = getDishesFromMap();
-        if (dishesForMenu.length<1)return "menu.jsf";  // no dishes attached
+        if (dishesForMenu.length<1)return "newMenu.jsf";  // no dishes attached
 
         // Create menu
         boolean created = restaurantEJB.createMenu(date, dishesForMenu);
