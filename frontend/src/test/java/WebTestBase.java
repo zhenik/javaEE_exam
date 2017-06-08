@@ -127,6 +127,22 @@ public class WebTestBase {
         assertTrue(home.isLoggedIn(userId));
     }
 
+    protected static void createAndLogNewUserManually(
+            String userId, String password, String passConfirmtion, String firstName, String middlename,String lastName, Boolean chef){
+
+        home.logout();
+        LoginPageObject login = home.toLogin();
+        CreateUserPageObject create = login.clickCreateNewUser();
+        create.createUser(
+                userId,
+                password,
+                passConfirmtion,
+                firstName,
+                middlename,
+                lastName,
+                chef);
+    }
+
 //
 //    protected static void createEvent(String title, String country) {
 //        CreateEventPageObject create = home.toCreateEvent();

@@ -32,6 +32,49 @@ public class WebPageIT extends WebTestBase {
         assertTrue(login.isOnPage());
     }
 
+    @Test
+    public void testRegister_wrongPasswordConfirmation(){
+        //Arrange
+        String userId = getUniqueId();
+
+        //Act
+        createAndLogNewUserManually(userId,
+                "passwords",
+                "no",
+                "firstName",
+                "middlename",
+                "lastName",
+                false);
+        //Assert
+        assertFalse(home.isLoggedIn());
+
+    }
+
+    @Test
+    public void testRegister_withSameUserId(){
+        //Arrange
+        String userId = getUniqueId();
+
+        //Act
+        createAndLogNewUser(userId,false);
+        home.logout();
+
+        createAndLogNewUserManually(userId,
+                "passwords",
+                "passwords",
+                "firstName",
+                "middlename",
+                "lastName",
+                false);
+
+        //Assert
+        assertFalse(home.isLoggedIn());
+
+
+
+
+    }
+
 
     @Test
     public void testRegisterAndLoginCustomer(){
@@ -148,21 +191,4 @@ public class WebPageIT extends WebTestBase {
         assertTrue(menuPage.isOnPage());
     }
 
-//
-//    @Test
-//    public void testCreateValidUser(){
-//        LoginPageObject login = home.toLogin();
-//        CreateUserPageObject create = login.clickCreateNewUser();
-//        assertTrue(create.isOnPage());
-//
-//        String userName = getUniqueId();
-//
-//        HomePageObject home = create.createUser(userName,"foo","foo","Foo","foo");
-//        assertNotNull(home);
-//        assertTrue(home.isOnPage());
-//        assertTrue(home.isLoggedIn(userName));
-//
-//        home.logout();
-//        assertFalse(home.isLoggedIn());
-//    }
 }
