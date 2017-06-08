@@ -48,6 +48,11 @@ public class HomePageObject extends PageObject {
         waitForPageToLoad();
         return new MenuPageObject(driver);
     }
+    public MenuListPageObject toMenuList() {
+        driver.findElement(By.id("menusListLink")).click();
+        waitForPageToLoad();
+        return new MenuListPageObject(driver);
+    }
 
 
 
@@ -119,4 +124,6 @@ public class HomePageObject extends PageObject {
 
         return null;
     }
+
+
 }
