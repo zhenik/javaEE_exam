@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="title">Menu list</ui:define>
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when test="#{! loginController.loggedIn}">
+                <h3>Please login first</h3>
+            </c:when>
+            <c:otherwise>
+                <c:choose>
+                    <c:when test="#{! loginController.chef}">
+                        <h3>Customer has no rights to view list of menus</h3>
+                    </c:when>
+
+
+                    <c:otherwise>
+
+
+                        <c:set var="allMenus" value="#{menuController.menus}"/>
+                        <c:choose>
+                            <c:when test="#{allMenus.size()==0}">
+                                <h3>No menus. Create menu first</h3>
+                            </c:when>
+                            <c:otherwise>
+                                <h3>MENUS</h3>
+                                <!--Menu list start-->
+
+
+
+                                <!--Menu list end-->
+                            </c:otherwise>
+                        </c:choose>
+
+
+
+                    </c:otherwise>
+
+
+                </c:choose>
+
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+
+</ui:composition>
+</html>
