@@ -43,8 +43,6 @@ public class MenuCreateController implements Serializable {
     // Create menu method
     public String save() {
 
-        System.out.println(menuDishes.toString()); //debug
-
         if (!loginController.isLoggedIn()) return "login.jsf"; // redirect if not logged
 
         Date date = parseDate();
@@ -68,7 +66,6 @@ public class MenuCreateController implements Serializable {
         String dishName =(String) ((UIInput) event.getSource()).getAttributes().get("dishName");
         Boolean value = (Boolean) event.getNewValue();
         menuDishes.put(dishName,value);
-        System.out.println(dishName + "|"+value);
     }
 
     private Date parseDate(){
@@ -79,12 +76,8 @@ public class MenuCreateController implements Serializable {
             DateFormat formatter = new SimpleDateFormat( "EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
             try {
                 date1 = (Date)formatter.parse(dateStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            } catch (ParseException e) {e.printStackTrace();}
 
-            System.out.println(date1.getTime());
-            System.out.println(date1.toString());
         }
         return date1;
     }
@@ -96,8 +89,8 @@ public class MenuCreateController implements Serializable {
             if (entry.getValue()) {
                 temp.add(restaurantEJB.getDish(entry.getKey()));
             }
-            System.out.println(entry.getKey() + "/" + entry.getValue());
         }
+
         Dish[] dishes = new Dish[temp.size()];
         temp.toArray(dishes);
         return dishes;

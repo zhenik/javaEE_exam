@@ -6,7 +6,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +41,6 @@ public class DishController implements Serializable {
     public void createDish(){
         boolean b = restaurantEJB.createDish(formDishName, formDishDescription);
         clearFields();
-        System.out.println("Dish was created: "+b);
     }
 
     public String getFormDishName() {return formDishName;}

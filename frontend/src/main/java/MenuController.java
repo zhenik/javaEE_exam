@@ -63,8 +63,6 @@ public class MenuController implements Serializable {
 
     public Date getCurrentDate() {return currentDate;}
     public void setCurrentDate(Date currentDate) {this.currentDate = currentDate;}
-    public Menu getCurrentMenu() {return currentMenu;}
-    public void setCurrentMenu(Menu currentMenu) {this.currentMenu = currentMenu;}
     public Menu getNextMenu() {return nextMenu;}
     public void setNextMenu(Menu nextMenu) {this.nextMenu = nextMenu;}
     public Menu getPreviousMenu() {return previousMenu;}
