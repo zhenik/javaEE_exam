@@ -35,21 +35,27 @@
                         <!--DISH LIST START-->
 
 
-                        <!--<h:link value="Show default" outcome="/home.jsf"  id="defaultLink"/>-->
-                        <!--<h:link value="Show next" outcome="/home.jsf"  id="nextLink"/>-->
-                        <!--<h:link value="Show previous" outcome="/home.jsf"  id="previousLink"/>-->
 
-                        <!--<h:commandLink id="Show default" value="Up" action="#{menuController.update()}" />-->
-                        <!--<br/>-->
+                        <h:form>
+                            <h:commandLink id="defaultShowLink" value="Show default" action="#{menuController.showDefault()}" />
+                            <br/>
+                            <c:if test="#{menuController.nextMenu!=null}">
+                                <h:commandLink
+                                        id="nextShowLink"
+                                        value="Show next (#{menuController.getDateAsString(menuController.nextMenu.dateId)})"
+                                        action="#{menuController.showNext()}" />
+                                <br/>
+                            </c:if>
+                            <c:if test="#{menuController.previousMenu!=null}">
+                                <h:commandLink
+                                        id="previousShowLink"
+                                        value="Show previous (#{menuController.getDateAsString(menuController.previousMenu.dateId)})"
+                                        action="#{menuController.showPrevious()}" />
+                                <br/>
+                            </c:if>
+                        </h:form>
 
-                        <!--<h:commandLink id="Show next" value="Down" action="#{menuController.update()}" />-->
-                        <!--<br/>-->
-
-                        <!--<h:commandLink id="Show previous" value="Down" action="#{menuController.update()}" />-->
-                        <!--<br/>-->
-
-
-                        <!--Does not parse date correct-->
+                        <!--Does NOT parse DATE correct-->
                         <!--<h3>Menu for-->
                             <!--<h:outputText value="#{menuController.menu.dateId}" >-->
                                 <!--<f:convertDateTime pattern="dd-MM-yyyy" />-->
