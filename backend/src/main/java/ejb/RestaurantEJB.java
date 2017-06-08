@@ -35,6 +35,7 @@ public class RestaurantEJB implements Serializable {
         dish = new Dish();
         dish.setName(name);
         dish.setDescription(description);
+        dish.setCreatedTime(new Date());
         em.persist(dish);
         return true;
     }

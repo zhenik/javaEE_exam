@@ -10,9 +10,7 @@ import javax.ejb.EJBException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -447,8 +445,27 @@ public class RestaurantEJBTest extends EjbTestBase  {
 
         //Assert
         assertTrue(formattedDate1.equals(formattedDate2));
+    }
 
+    @Test
+    public void testDish_date(){
+        //Arrange
+        Dish dish1 = createDish("foo");
+        Dish dish2 = createDish("bar");
+        Dish dish3 = createDish("foofoo");
 
+        //Act
+        ArrayList<Dish> list = new ArrayList<>();
+        list.add(dish3);
+        list.add(dish1);
+        list.add(dish2);
+        Collections.sort(list);
+
+        //Assert
+        assertNotNull(dish1.getCreatedTime());
+        assertEquals("foofoo",list.get(0).getName());
+        assertEquals("bar",list.get(1).getName());
+        assertEquals("foo",list.get(2).getName());
     }
 
 }
