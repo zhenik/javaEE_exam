@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Named
 @SessionScoped
@@ -84,4 +85,6 @@ public class MenuController implements Serializable {
         }
     }
 
+    public List<Menu> getMenus(){return restaurantEJB.getMenus();}
+    public void removeMenu(Date menuId){restaurantEJB.removeMenu(menuId);}
 }
