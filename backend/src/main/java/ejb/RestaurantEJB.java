@@ -22,9 +22,8 @@ public class RestaurantEJB implements Serializable {
     private EntityManager em;
 
     public boolean createDish(String name, String description){
-        if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
-            return false;
-        }
+        if (name == null || name.isEmpty() || description == null || description.isEmpty()) {return false;}
+        if (description.trim().length()<1)return false;
 
         Dish dish = getDish(name);
         if (dish != null) {
@@ -34,7 +33,7 @@ public class RestaurantEJB implements Serializable {
 
         dish = new Dish();
         dish.setName(name);
-        dish.setDescription(description);
+        dish.setDescription(description.trim());
         dish.setCreatedTime(new Date());
         em.persist(dish);
         return true;

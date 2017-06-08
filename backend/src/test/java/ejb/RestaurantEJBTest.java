@@ -230,6 +230,19 @@ public class RestaurantEJBTest extends EjbTestBase  {
     }
 
     @Test
+    public void testCreateDish_emptyDescription(){
+        //Arrange
+        String dishName = "dishName";
+        String dishDescription = "      ";
+
+        //Act
+        boolean created = created = restaurantEJB.createDish(dishName,dishDescription);
+
+        //Assert
+        assertFalse(created);
+    }
+
+    @Test
     public void testTryCreateDish_dishAlreadyExists(){
         //Arrange
         String dishName = "dishName";
