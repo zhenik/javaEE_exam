@@ -76,13 +76,15 @@ public class MenuCreateController implements Serializable {
         if (date!=null){
             System.out.println(date);
             String dateStr = date;
-            DateFormat formatter = new SimpleDateFormat( "EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+            DateFormat formatter = new SimpleDateFormat( "EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
             try {
                 date1 = (Date)formatter.parse(dateStr);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
             System.out.println(date1.getTime());
+            System.out.println(date1.toString());
         }
         return date1;
     }
