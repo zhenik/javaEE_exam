@@ -49,13 +49,19 @@
                         <!--<br/>-->
 
 
+                        <!--Does not parse date correct-->
+                        <!--<h3>Menu for-->
+                            <!--<h:outputText value="#{menuController.menu.dateId}" >-->
+                                <!--<f:convertDateTime pattern="dd-MM-yyyy" />-->
+                            <!--</h:outputText>-->
+                        <!--</h3>-->
 
-                        <h3>Menu for
-                            <h:outputText value="#{menuController.menu.dateId}" >
-                                <f:convertDateTime pattern="dd-MM-yyyy" />
-                            </h:outputText>
-                        </h3>
-                        <br/>
+                        <c:if test="#{menuController.currentDate!=null}">
+                            <h3>Menu for
+                                <h:outputText value="#{menuController.getDateAsString(menuController.currentDate)}" id="currentDateId" />
+                            </h3>
+                            <br/>
+                        </c:if>
 
                         <c:set var="allDishes" value="#{menuController.menu.dishes}"/>
                         <h:dataTable value="#{allDishes}" var="dish" border="1" id="dishTable">
