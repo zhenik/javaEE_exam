@@ -5,6 +5,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageObject extends PageObject {
@@ -93,10 +94,15 @@ public class HomePageObject extends PageObject {
     }
 
 
-//    public int getNumberOfDisplayedEvents() {
-//        List<WebElement> elements = driver.findElements(
-//                By.xpath("//table[@id='eventTable']//tbody//tr[string-length(text()) > 0]"));
-//
-//        return elements.size();
-//    }
+
+
+    public String getCurrentDateId(){
+        WebElement currentDateId=null;
+        try{
+            currentDateId = driver.findElement(By.id("currentDateId"));
+            return currentDateId.getText();
+        }catch (NoSuchElementException e){}
+
+        return null;
+    }
 }
