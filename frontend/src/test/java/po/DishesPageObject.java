@@ -45,4 +45,10 @@ public class DishesPageObject extends PageObject {
         }catch (NoSuchElementException e){}
         return element!=null;
     }
+
+    public HomePageObject toHome(){
+        driver.findElement(By.id("homeLink")).click();
+        waitForPageToLoad();
+        return new HomePageObject(driver);
+    }
 }

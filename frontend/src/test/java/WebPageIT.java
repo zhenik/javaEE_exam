@@ -1,10 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.NoSuchElementException;
-import po.CreateUserPageObject;
-import po.DishesPageObject;
-import po.HomePageObject;
-import po.LoginPageObject;
+import po.*;
 
 
 import static org.junit.Assert.*;
@@ -93,7 +90,7 @@ public class WebPageIT extends WebTestBase {
     }
 
     @Test
-    public void testDishesLink_nonRegisteredUser(){
+    public void testDishesLink_3Cases(){
 
         // 1 Act & Assert NON registered
         DishesPageObject dishesPage=null;
@@ -107,6 +104,7 @@ public class WebPageIT extends WebTestBase {
         try{
             String userId = getUniqueId();
             createAndLogNewUser(userId,false);
+
             dishesPage = home.toDishes();
             fail();
         }catch (NoSuchElementException e){}
@@ -119,6 +117,35 @@ public class WebPageIT extends WebTestBase {
 
         assertNotNull(dishesPage);
         assertTrue(dishesPage.isOnPage());
+    }
+
+    @Test
+    public void testMenuLink_3Cases(){
+
+        // 1 Act & Assert NON registered
+        MenuPageObject menuPage=null;
+        try{
+            menuPage = home.toMenus();
+            fail();
+        }catch (NoSuchElementException e){}
+        assertNull(menuPage);
+
+        // 2 Act & Assert CUSTOMER
+        try{
+            String userId = getUniqueId();
+            createAndLogNewUser(userId,false);
+            menuPage = home.toMenus();
+            fail();
+        }catch (NoSuchElementException e){}
+        assertNull(menuPage);
+
+        // 3 Act & Assert CHEF
+        String userId = getUniqueId();
+        createAndLogNewUser(userId,true);
+        menuPage = home.toMenus();
+
+        assertNotNull(menuPage);
+        assertTrue(menuPage.isOnPage());
     }
 
 //

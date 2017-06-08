@@ -42,6 +42,14 @@ public class HomePageObject extends PageObject {
         return new DishesPageObject(driver);
     }
 
+    public MenuPageObject toMenus(){
+        driver.findElement(By.id("menusLink")).click();
+        waitForPageToLoad();
+        return new MenuPageObject(driver);
+    }
+
+
+
     public boolean isLinkDishesVisible(){
         WebElement linkToDishes=null;
         try{
@@ -75,6 +83,13 @@ public class HomePageObject extends PageObject {
             if (welcomeMessage.getText().contains("Customer")){return true;}
         }catch (NoSuchElementException e){}
         return false;
+    }
+
+    public void clickDefault(){
+        try{
+            driver.findElement(By.id("showForm:defaultShowLink")).click();
+            waitForPageToLoad();
+        }catch (NoSuchElementException e){}
     }
 
 

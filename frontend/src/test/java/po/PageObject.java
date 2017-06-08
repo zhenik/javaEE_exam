@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public abstract class PageObject {
@@ -55,4 +57,11 @@ public abstract class PageObject {
             return Boolean.parseBoolean(res);
         });
     }
+
+    public String parseDate(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = formatter.format(date);
+        return formattedDate;
+    }
+
 }
