@@ -36,10 +36,11 @@ public class HomePageObject extends PageObject {
         return new LoginPageObject(driver);
     }
 
-//    public DishesPageObject toDishes() {
-//        String context = "/my_cantina"; // see jboss-web.xml
-//        driver.get("localhost:8080" + context + "/home.jsf");
-//    }
+    public DishesPageObject toDishes(){
+        driver.findElement(By.id("dishesLink")).click();
+        waitForPageToLoad();
+        return new DishesPageObject(driver);
+    }
 
     public boolean isLinkDishesVisible(){
         WebElement linkToDishes=null;
