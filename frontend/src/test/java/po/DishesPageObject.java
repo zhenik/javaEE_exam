@@ -36,16 +36,6 @@ public class DishesPageObject extends PageObject {
         return this;
     }
 
-    public boolean isDishExists(String dishName){
-        WebElement element = null;
-        try {
-            element = driver.findElement(
-//                    By.xpath("//table[@id='projectTable']//tbody//tr/td[contains(.,'"+dishName+"')]"));
-                    By.xpath("//table[@id='dishTable']//tbody//tr/td[contains(.,'"+dishName+"')]"));
-        }catch (NoSuchElementException e){}
-        return element!=null;
-    }
-
     public HomePageObject toHome(){
         driver.findElement(By.id("homeLink")).click();
         waitForPageToLoad();

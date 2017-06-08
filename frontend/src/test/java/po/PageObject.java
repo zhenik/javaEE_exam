@@ -1,12 +1,10 @@
 package po;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,10 +56,45 @@ public abstract class PageObject {
         });
     }
 
-    public String parseDate(Date date){
+    public String parseDateDirect(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = formatter.format(date);
         return formattedDate;
+    }
+
+    public String parseDateRevert(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = formatter.format(date);
+        return formattedDate;
+    }
+
+    public boolean isDishExists(String dishName){
+        WebElement element = null;
+        try {
+            element = driver.findElement(
+//                    By.xpath("//table[@id='projectTable']//tbody//tr/td[contains(.,'"+dishName+"')]"));
+                    By.xpath("//table[@id='dishTable']//tbody//tr/td[contains(.,'"+dishName+"')]"));
+        }catch (NoSuchElementException e){}
+        return element!=null;
+    }
+
+//    public boolean isDishExists(String dishName){
+//        WebElement element = null;
+//        try {
+//            element = driver.findElement(
+
+//                    By.xpath("//table//tbody//tr/td[contains(.,'"+dishName+"')]"));
+//        }catch (NoSuchElementException e){}
+//        return element!=null;
+//    }
+
+    public int getNumberOfDisplayedDishes(){
+        List<WebElement> elements = new ArrayList<>();
+        try{
+            elements = driver.findElements(
+                    By.xpath("//table[@id='dishTable']//tbody//tr[string-length(text()) > 0]"));
+        }catch (NoSuchElementException e){}
+        return elements.size();
     }
 
 }

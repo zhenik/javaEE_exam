@@ -93,6 +93,20 @@ public class HomePageObject extends PageObject {
         }catch (NoSuchElementException e){}
     }
 
+    public void clickNext(){
+        try{
+            driver.findElement(By.id("showForm:nextShowLink")).click();
+            waitForPageToLoad();
+        }catch (NoSuchElementException e){}
+    }
+
+    public void clickPrevious(){
+        try{
+            driver.findElement(By.id("showForm:previousShowLink")).click();
+            waitForPageToLoad();
+        }catch (NoSuchElementException e){}
+    }
+
 
 
 

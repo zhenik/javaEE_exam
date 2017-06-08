@@ -24,12 +24,14 @@ public class MenuPageObject extends PageObject {
         return driver.getTitle().equals("Menu");
     }
 
-    public boolean isDishExists(String dishName){
+    public boolean isDishExistsOnMenuForm(String dishName){
         WebElement element = null;
         try {
             element = driver.findElement(
 //                    By.xpath("//table[@id='projectTable']//tbody//tr/td[contains(.,'"+dishName+"')]"));
-                    By.xpath("//table//tbody//tr/td[contains(.,'"+dishName+"')]"));
+//                    //table[@id='createMenuForm:dishTable']//tbody//tr/td[contains(.,'"+dishName+")]
+//                    By.xpath("//table//tbody//tr/td[contains(.,'"+dishName+"')]"));
+                    By.xpath("//table[@id='createMenuForm:dishTable']//tbody//tr/td[contains(.,'"+dishName+"')]"));
         }catch (NoSuchElementException e){}
         return element!=null;
     }
@@ -44,7 +46,7 @@ public class MenuPageObject extends PageObject {
 
     public HomePageObject clickCreate(String date){
         setText("createMenuForm:date", date);
-        waitMe();
+//        waitMeDebug();
         WebElement createNewMenu = driver.findElement(By.id("createMenuForm:createMenuButton"));
         createNewMenu.click();
         waitForPageToLoad();
@@ -58,7 +60,7 @@ public class MenuPageObject extends PageObject {
     }
 
     // DEBUG purpose
-    private void waitMe(){
+    private void waitMeDebug(){
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
