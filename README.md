@@ -51,9 +51,11 @@ Selenium tests WebPageIT in frontend module
 ## How to run application  
 1. Clone repo  
 2. Run from application root folder  
-`mvn install` - will run all Arquillian tests  
+`mvn install -DskipTests` - will install app without tests  
 or (OPTIONAL)  
-`mvn install -P selenium` - will run Arquillian & Selenium tests  
+`mvn install` -  will install and run all Arquillian tests  
+or (OPTIONAL)  
+`mvn install -P selenium` - will install and run Arquillian & Selenium tests  
 !NB for Selenium tests needs [Chrome driver](https://sites.google.com/a/chromium.org/chromedriver/) in user root folder  
 3. go to `~/frontend` module and run there  
 `mvn wildfly:run`  
