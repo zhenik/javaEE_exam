@@ -48,5 +48,15 @@ Selenium tests WebPageIT in frontend module
 
 * travis for Arquillian test
 
+## How to run application  
+1. Clone repo  
+2. Run from application root folder  
+`mvn install` - will run all Arquillian tests  
+or (OPTIONAL)  
+`mvn install -P selenium` - will run Arquillian & Selenium tests  
+!NB for Selenium tests needs [Chrome driver](https://sites.google.com/a/chromium.org/chromedriver/) in user root folder  
+3. go to `~/frontend` module and run there  
+`mvn wildfly:run`  
+4. Open in browser `localhost:8080/my_cantina`  
 
 
